@@ -5,11 +5,22 @@ function spawnBox(id,boxPosition,boxDim)
 
 bosPosSim3D = [boxPosition(1), -boxPosition(2), boxPosition(3)]; % Convert position from SL world to Sim3D world
 World = sim3d.World.getWorld(bdroot);
+
 % Spawn new actor only if it doesn't already exists
 if isempty(World.Root.findBy('ActorName',['collBox' num2str(id)],'first'))
-    Box = sim3d.Actor('ActorName',['collBox' num2str(id)],'Mobility',sim3d.utils.MobilityTypes.Movable);
+    
+    Box = sim3d.Actor('ActorName',['collBox' num2str(id)], ...
+        'Mobility',sim3d.utils.MobilityTypes.Movable);
+    
     add(World,Box)
-    createShape(Box,'box', [boxDim,boxDim,boxDim]);
+
+    % Support variable box dimensions
+    if numel(boxDim) == 1
+        createShape(Box,'box', [boxDim, boxDim, boxDim]);
+    else
+        createShape(Box,'box', boxDim);
+    end
+
     Box.Translation = bosPosSim3D;
     Box.Color = [200 100 16]/256;
     %Box.Physics = true;
@@ -18,4 +29,3 @@ if isempty(World.Root.findBy('ActorName',['collBox' num2str(id)],'first'))
 end
 
 end
-

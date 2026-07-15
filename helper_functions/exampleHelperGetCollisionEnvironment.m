@@ -14,7 +14,7 @@ if isempty(collisionArray)
     % Initialize a cell array of collisionBoxes placed away from the robot
     for i=coder.unroll(1:50)
         if i<=maxNumOfBoxes+3
-        collisionArray{end+1} = collisionBox(boxDim,boxDim,boxDim,Pose=trvec2tform([3,3,0]));
+        collisionArray{end+1} = collisionBox(boxDim(1), boxDim(2), boxDim(3), Pose=trvec2tform([3,3,0]));
         end
     end
 
@@ -39,9 +39,9 @@ if isempty(collisionArray)
     collisionArray{3}.Pose = trvec2tform(palletLoc);
     
     % Update the collisionBox for box0
-    collisionArray{4}.X = boxDim;
-    collisionArray{4}.Y = boxDim;
-    collisionArray{4}.Z = boxDim;
+    collisionArray{4}.X = boxDim(1);
+    collisionArray{4}.Y = boxDim(2);
+    collisionArray{4}.Z = boxDim(3);
     collisionArray{4}.Pose = trvec2tform(boxPosition);
 end
 
@@ -57,7 +57,7 @@ if graspState == false
     % Simultaneously update the position of the dropped box 
     % (There is no dropped box at the first time step)
     if ID>=1 
-        droppedBoxPoseUpdate = exampleHelperPalletArrangement(ID-1,palletDim,palletLoc,boxDim);
+        droppedBoxPoseUpdate = exampleHelperPalletArrangement(ID-1,palletLoc,palletDim,boxDim);
         collisionArray{ID+3}.Pose = trvec2tform(droppedBoxPoseUpdate);
     end
 end
